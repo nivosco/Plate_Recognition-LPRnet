@@ -222,7 +222,7 @@ def get_train_model(num_channels, label_len, b, img_size):
     x = tf.nn.relu(x)
 
     x = tf.nn.max_pool(x,
-                          ksize=[1, 3, 3, 1],
+                          ksize=[1, 2, 2, 1],
                           strides=[1, 2, 1, 1],
                           padding='SAME')
     x = small_basic_block(x, 64,256)
@@ -234,18 +234,18 @@ def get_train_model(num_channels, label_len, b, img_size):
 
     x = tf.nn.relu(x)
     x = tf.nn.max_pool(x,
-                       ksize=[1, 3, 3, 1],
+                       ksize=[1, 2, 2, 1],
                        strides=[1, 2, 1, 1],
                        padding='SAME')
     x = tf.layers.dropout(x)
 
-    x = conv(x, 256, 256, ksize=[4, 1])
+    x = conv(x, 256, 256, ksize=[3, 1])
     x = tf.layers.dropout(x)
     x = tf.layers.batch_normalization(x)
     x = tf.nn.relu(x)
 
 
-    x = conv(x,256,NUM_CHARS+1,ksize=[1,13],pad='SAME')
+    x = conv(x,256,NUM_CHARS+1,ksize=[1,9],pad='SAME')
     x = tf.nn.relu(x)
     cx = tf.reduce_mean(tf.square(x))
     x = tf.div(x,cx)
